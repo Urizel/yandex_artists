@@ -51,6 +51,9 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
         Artist artist = artists.get(position);
         Picasso.with(context)
                 .load(artist.getCover().getSmallCover())
+                .placeholder(R.drawable.ic_music_note_black_48dp)
+                .fit()
+                .centerInside()
                 .into(smallCover);
         name.setText(artist.getName());
         genres.setText(ArtistInfoFormatter.formGenreString(artist.getGenres()));
