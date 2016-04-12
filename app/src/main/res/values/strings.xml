@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">YandexMusicTraining</string>
+    <string name="unknown_artist">Неизвестный исполнитель</string>
+    <string name="unknown_styles">неизвестный стиль</string>
+    <string name="unknown_albums_and_songs">XX альбомов, XX песен</string>
+</resources>
