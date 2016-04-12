@@ -17,6 +17,8 @@ public class ArtistInfoFormatterTest {
     final String BEBOP = "Be-Bop";
     final String C_SEP = ", ";
     final String TRACKS = " песен, ";
+    final char interpunct = 183;
+    final String TRACKS_AND_INTERPUNCT = " песен " + interpunct + " ";
     final String ALBUMS = " альбомов";
 
     private ArrayList<String> genres = new ArrayList<>();
@@ -39,6 +41,13 @@ public class ArtistInfoFormatterTest {
 
     @Test
     public void testGetAlbumsAndSongsForCard(){
+        testString = 20 + TRACKS_AND_INTERPUNCT + 20 + ALBUMS;
+        System.out.print(testString);
+        Assert.assertEquals(testString, ArtistInfoFormatter.getAlbumsAndSongsWithInterpunct(20, 20));
+    }
+
+    @Test
+    public void testGetAlbumsAndSongsWithInterpunct(){
         testString = 20 + TRACKS + 20 + ALBUMS;
         Assert.assertEquals(testString, ArtistInfoFormatter.getAlbumsAndSongsForCard(20, 20));
     }

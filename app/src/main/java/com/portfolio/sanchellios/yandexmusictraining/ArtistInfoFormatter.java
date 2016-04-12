@@ -7,6 +7,7 @@ import java.util.Iterator;
  * Created by aleksandrvasilenko on 08.04.16.
  */
 public class ArtistInfoFormatter {
+    private static final char interpunct = 183;
     public static String formGenreString(ArrayList<String> genres){
         StringBuilder builder = new StringBuilder();
         Iterator<String> iterator = genres.iterator();
@@ -21,5 +22,9 @@ public class ArtistInfoFormatter {
 
     public static String getAlbumsAndSongsForCard(int tracks, int albums){
         return tracks + " песен, " + albums + " альбомов";
+    }
+
+    public static String getAlbumsAndSongsWithInterpunct(int tracks, int albums){
+        return tracks + " песен " + interpunct + " " + albums + " альбомов";
     }
 }
