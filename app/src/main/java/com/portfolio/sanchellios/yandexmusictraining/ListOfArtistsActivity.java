@@ -69,6 +69,15 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
         if(task != null){
             task.cancel(false);
         }
+        Log.d("AsyncTask status", isTaskKilled());
+    }
+
+    private String isTaskKilled(){
+        if(task == null){
+            return "task is killed";
+        }else {
+            return "task is not killed";
+        }
     }
 
     void setArtists(ArrayList<Artist> artists){
