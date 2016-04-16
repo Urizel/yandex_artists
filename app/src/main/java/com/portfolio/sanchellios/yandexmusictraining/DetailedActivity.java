@@ -57,10 +57,8 @@ public class DetailedActivity extends AppCompatActivity {
     private void setTheCover(){
         Picasso.with(getApplicationContext())
                 .load(artist.getCover().getBigCover())
-                .fit()
                 .placeholder(R.drawable.ic_music_note_black_48dp)
                 .error(R.drawable.unknown_artist)
-                .centerInside()
                 .into(cover);
     }
 }

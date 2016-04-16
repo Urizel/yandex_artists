@@ -5,16 +5,19 @@
 
     <LinearLayout
         xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:context="com.portfolio.sanchellios.yandexmusictraining.ArtistDetailedFragment">
 
-        <ImageView
+        <com.github.jimcoven.view.JCropImageView
             android:id="@+id/d_frag_cover_image_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/unknown_artist"/>
+            android:layout_height="220dp"
+            android:src="@drawable/unknown_artist"
+            app:cropType="fit_width"
+            app:cropAlign="top"/>
 
         <TextView
             android:id="@+id/d_frag_artist_genres"
@@ -22,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/detailed_view_side_margin"
             android:layout_marginRight="@dimen/detailed_view_side_margin"
+            android:layout_marginTop="@dimen/detailed_big_vertical_margin"
             android:text="@string/unknown_genres"/>
 
         <TextView
@@ -30,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/detailed_view_side_margin"
             android:layout_marginRight="@dimen/detailed_view_side_margin"
+            android:layout_marginTop="@dimen/detailed_big_vertical_margin"
             android:text="@string/unknown_albums_and_songs"/>
 
         <TextView
@@ -38,7 +43,9 @@
             android:layout_height="wrap_content"
             android:text="@string/bio"
             android:layout_marginLeft="@dimen/detailed_view_side_margin"
-            android:layout_marginRight="@dimen/detailed_view_side_margin"/>
+            android:layout_marginRight="@dimen/detailed_view_side_margin"
+            android:layout_marginTop="@dimen/detailed_big_vertical_margin"
+            style="@style/MainLabel.Bio"/>
 
         <TextView
             android:id="@+id/d_frag_artist_bio"
@@ -46,7 +53,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/detailed_view_side_margin"
             android:layout_marginRight="@dimen/detailed_view_side_margin"
-            android:text="@string/fake_bio"/>
+            android:layout_marginTop="@dimen/detailed_medium_vertical_margin"
+            android:text="@string/fake_bio"
+            style="@style/MainText"/>
 
     </LinearLayout>
 

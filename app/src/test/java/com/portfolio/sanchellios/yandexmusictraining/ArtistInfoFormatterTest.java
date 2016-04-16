@@ -41,15 +41,15 @@ public class ArtistInfoFormatterTest {
 
     @Test
     public void testGetAlbumsAndSongsForCard(){
-        testString = 20 + TRACKS_AND_INTERPUNCT + 20 + ALBUMS;
+        testString = "20 альбомов, 20 песен";
         System.out.print(testString);
-        Assert.assertEquals(testString, ArtistInfoFormatter.getAlbumsAndSongsWithInterpunct(20, 20));
+        Assert.assertEquals(testString, ArtistInfoFormatter.getAlbumsAndSongsForCard(20, 20));
     }
 
     @Test
     public void testGetAlbumsAndSongsWithInterpunct(){
-        testString = 20 + TRACKS + 20 + ALBUMS;
-        Assert.assertEquals(testString, ArtistInfoFormatter.getAlbumsAndSongsForCard(20, 20));
+        testString = "20 альбомов "+interpunct+" 20 песен";
+        Assert.assertEquals(testString, ArtistInfoFormatter.getAlbumsAndSongsWithInterpunct(20, 20));
     }
 
     @After
