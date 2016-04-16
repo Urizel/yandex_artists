@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class ListOfArtistsActivity extends AppCompatActivity {
+public class ListOfArtistsActivity extends AppCompatActivity implements ArtistListFragment.ArtistClicker {
     private final String ARTISTS = "ARTISTS";
     private ArrayList<Artist> artists = new ArrayList<>();
     private AsyncTask task;
@@ -24,6 +24,7 @@ public class ListOfArtistsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_list_of_artists);
         if(savedInstanceState == null){
             task = new JSONLoader().execute("http://cache-default04g.cdn.yandex.net/download.cdn.yandex.net/mobilization-2016/artists.json");
@@ -60,6 +61,16 @@ public class ListOfArtistsActivity extends AppCompatActivity {
 
     void setArtists(ArrayList<Artist> artists){
         this.artists = artists;
+    }
+
+    @Override
+    public void getToArtistDetailScreen(Artist artist) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.artist_container, ArtistDetailedFragment.newInstance(artist))
+                .addToBackStack(null)
+                .commit();
     }
 
     private class JSONLoader extends AsyncTask<String, Void, ArrayList<Artist>> {

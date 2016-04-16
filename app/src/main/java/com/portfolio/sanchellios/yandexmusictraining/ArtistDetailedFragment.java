@@ -3,6 +3,7 @@ package com.portfolio.sanchellios.yandexmusictraining;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,6 @@ public class ArtistDetailedFragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,13 +44,15 @@ public class ArtistDetailedFragment extends Fragment {
         albumsAndSongs = (TextView)view.findViewById(R.id.d_frag_artist_albums_and_songs);
         bio = (TextView)view.findViewById(R.id.d_frag_artist_bio);
 
+        Log.d("Big_image", artist.getCover().getBigCover());
         Picasso.with(getActivity().getApplicationContext())
                 .load(artist.getCover().getBigCover())
                 .fit()
+                .placeholder(R.drawable.unknown_artist)
                 .centerInside()
                 .into(cover);
 
-        genres.setText(artist.getGenres().toString());
+        genres.setText(ArtistInfoFormatter.formGenreString(artist.getGenres()));
         albumsAndSongs.setText(
                 ArtistInfoFormatter
                         .getAlbumsAndSongsWithInterpunct(

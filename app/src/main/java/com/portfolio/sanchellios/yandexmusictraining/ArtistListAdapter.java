@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +20,11 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
 
     private ArrayList<Artist> artists;
     private Context context;
+    private ArtistClickListener listener;
+
+    public static interface ArtistClickListener{
+        public void onClick(Artist artist);
+    }
 
     public ArtistListAdapter(ArrayList<Artist> artists, Context context){
         this.context = context;
@@ -48,7 +54,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
         TextView genres = (TextView)cardView.findViewById(R.id.artist_styles);
         TextView songsAndAlbums = (TextView)cardView.findViewById(R.id.albums_and_songs);
 
-        Artist artist = artists.get(position);
+        final Artist artist = artists.get(position);
         Picasso.with(context)
                 .load(artist.getCover().getSmallCover())
                 .placeholder(R.drawable.ic_music_note_black_48dp)
@@ -62,6 +68,19 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
                         artist.getNumberOfTracks(),
                         artist.getNumberOfAlbums()));
 
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onClick(artist);
+                }
+            }
+        });
+
+    }
+
+    public void setListener(ArtistClickListener listener){
+        this.listener = listener;
     }
 
     @Override
