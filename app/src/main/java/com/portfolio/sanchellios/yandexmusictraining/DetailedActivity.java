@@ -47,9 +47,7 @@ public class DetailedActivity extends AppCompatActivity {
         setTheCover();
         albumsAndSongs.setText(
                 ArtistInfoFormatter
-                        .getAlbumsAndSongsWithInterpunct(
-                                artist.getNumberOfTracks(),
-                                artist.getNumberOfAlbums()));
+                        .getAlbumsAndSongsWithInterpunct(new Oeuvre(artist)));
         bio.setText(artist.getDescription());
         genres.setText(ArtistInfoFormatter.formGenreString(artist.getGenres()));
     }

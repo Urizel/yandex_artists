@@ -7,22 +7,29 @@ public class AlbumsGrammarController extends GrammarController {
     @Override
     public String getCorrectString(int capacity) {
         int remainder = capacity % 10;
+        String albumsAEnding = "альбома";
+        String albumsOvEnding = "альбомов";
         switch (remainder){
             case 1:
-                return oneAlbum;
+                if(capacity%100 == 11){
+                    return albumsOvEnding;
+                }else {
+                    return "альбом";
+                }
+
             case 2:
             case 3:
             case 4:
-                return twoToFourAlbums;
+                return albumsAEnding;
             case 5:
             case 6:
             case 7:
             case 8:
             case 9:
             case 0:
-                return fiveToTenAlbums;
+                return albumsOvEnding;
             default:
-                return fiveToTenAlbums;
+                return albumsOvEnding;
         }
     }
 }

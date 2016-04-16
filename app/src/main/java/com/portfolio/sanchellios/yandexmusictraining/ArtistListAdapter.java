@@ -64,10 +64,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
         name.setText(artist.getName());
         genres.setText(ArtistInfoFormatter.formGenreString(artist.getGenres()));
         songsAndAlbums.setText(
-                ArtistInfoFormatter.getAlbumsAndSongsForCard(
-                        artist.getNumberOfTracks(),
-                        artist.getNumberOfAlbums()));
-
+                ArtistInfoFormatter.getAlbumsAndSongsForCard(new Oeuvre(artist)));
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

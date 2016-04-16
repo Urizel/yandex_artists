@@ -24,18 +24,18 @@ public class ArtistInfoFormatter {
         return builder.toString();
     }
 
-    public static String getAlbumsAndSongsForCard(int tracksNum, int albumsNum){
-        formCorrectSongsAndAlbumsStrings(tracksNum, albumsNum);
-        return "" + albumsNum + _ + albums + cma + _ + tracksNum + _ + tracks;
+    public static String getAlbumsAndSongsForCard(Oeuvre oeuvre){
+        formCorrectSongsAndAlbumsStrings(oeuvre);
+        return "" + oeuvre.getAlbums() + _ + albums + cma + _ + oeuvre.getTracks() + _ + tracks;
     }
 
-    public static String getAlbumsAndSongsWithInterpunct(int tracksNum, int albumsNum){
-        formCorrectSongsAndAlbumsStrings(tracksNum, albumsNum);
-        return "" + tracksNum + _ + albums + _ + interpunct + _ + albumsNum + _ + tracks;
+    public static String getAlbumsAndSongsWithInterpunct(Oeuvre oeuvre){
+        formCorrectSongsAndAlbumsStrings(oeuvre);
+        return "" + oeuvre.getAlbums() + _ + albums + _ + interpunct + _ + oeuvre.getTracks() + _ + tracks;
     }
 
-    private static void formCorrectSongsAndAlbumsStrings(int tracksNum, int albumsNum){
-        tracks = new SongsGrammarController().getCorrectString(tracksNum);
-        albums = new AlbumsGrammarController().getCorrectString(albumsNum);
+    private static void formCorrectSongsAndAlbumsStrings(Oeuvre oeuvre){
+        tracks = new SongsGrammarController().getCorrectString(oeuvre.getTracks());
+        albums = new AlbumsGrammarController().getCorrectString(oeuvre.getAlbums());
     }
 }

@@ -7,9 +7,15 @@ public class SongsGrammarController extends GrammarController {
     @Override
     public String getCorrectString(int capacity) {
         int remainder = capacity % 10;
+        String twoToFourSongs = "песни";
+        String fiveToTenSongs = "песен";
         switch (remainder){
             case 1:
-                return oneSong;
+                if(capacity%100 == 11){
+                    return fiveToTenSongs;
+                }else {
+                    return "песня";
+                }
             case 2:
             case 3:
             case 4:

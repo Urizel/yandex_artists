@@ -16,10 +16,9 @@ public class ArtistInfoFormatterTest {
     final String SALSA = "Salsa";
     final String BEBOP = "Be-Bop";
     final String C_SEP = ", ";
-    final String TRACKS = " песен, ";
     final char interpunct = 183;
-    final String TRACKS_AND_INTERPUNCT = " песен " + interpunct + " ";
-    final String ALBUMS = " альбомов";
+    Oeuvre oeuvre;
+
 
     private ArrayList<String> genres = new ArrayList<>();
     private String testString;
@@ -30,7 +29,6 @@ public class ArtistInfoFormatterTest {
         genres.add(HEAVY_METAL);
         genres.add(SALSA);
         genres.add(BEBOP);
-
     }
 
     @Test
@@ -41,15 +39,21 @@ public class ArtistInfoFormatterTest {
 
     @Test
     public void testGetAlbumsAndSongsForCard(){
-        testString = "20 альбомов, 20 песен";
+        testString = "20 альбомов, 100 песен";
         System.out.print(testString);
-        Assert.assertEquals(testString, ArtistInfoFormatter.getAlbumsAndSongsForCard(20, 20));
+        oeuvre = new Oeuvre();
+        oeuvre.setTracks(20);
+        oeuvre.setAlbums(100);
+        Assert.assertEquals(testString, ArtistInfoFormatter.getAlbumsAndSongsForCard(oeuvre));
     }
 
     @Test
     public void testGetAlbumsAndSongsWithInterpunct(){
-        testString = "20 альбомов "+interpunct+" 20 песен";
-        Assert.assertEquals(testString, ArtistInfoFormatter.getAlbumsAndSongsWithInterpunct(20, 20));
+        testString = "20 альбомов "+interpunct+" 100 песен";
+        oeuvre = new Oeuvre();
+        oeuvre.setTracks(20);
+        oeuvre.setAlbums(100);
+        Assert.assertEquals(testString, ArtistInfoFormatter.getAlbumsAndSongsWithInterpunct(oeuvre));
     }
 
     @After
