@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class ListOfArtistsActivity extends AppCompatActivity implements ArtistListFragment.ArtistClicker {
+public class ListOfArtistsActivity extends AppCompatActivity {
     private final String ARTISTS = "ARTISTS";
     private ArrayList<Artist> artists = new ArrayList<>();
     private AsyncTask task;
@@ -61,16 +61,6 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
 
     void setArtists(ArrayList<Artist> artists){
         this.artists = artists;
-    }
-
-    @Override
-    public void getToArtistDetailScreen(Artist artist) {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.artist_container, ArtistDetailedFragment.newInstance(artist))
-                .addToBackStack(null)
-                .commit();
     }
 
     private class JSONLoader extends AsyncTask<String, Void, ArrayList<Artist>> {

@@ -1,6 +1,6 @@
 package com.portfolio.sanchellios.yandexmusictraining;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -20,17 +20,6 @@ public class ArtistListFragment extends Fragment {
     private static final String RECYCLER_ARTIST = "RECYCLER_ARTIST";
     private ArrayList<Artist> artists = new ArrayList<>();
     private RecyclerView artistRecycler;
-    private ArtistClicker clicker;
-
-    public static interface ArtistClicker{
-        public void getToArtistDetailScreen(Artist artist);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.clicker = (ArtistClicker)context;
-    }
 
     public static ArtistListFragment newInstance(ArrayList<Artist> artists){
         Bundle bundle = new Bundle();
@@ -52,7 +41,9 @@ public class ArtistListFragment extends Fragment {
         adapter.setListener(new ArtistListAdapter.ArtistClickListener(){
             @Override
             public void onClick(Artist artist){
-                clicker.getToArtistDetailScreen(artist);
+                Intent intent = new Intent(getActivity(), DetailedActivity.class);
+                intent.putExtra(DetailedActivity.ARTIST, artist);
+                getActivity().startActivity(intent);
             }
         });
         artistRecycler.setAdapter(adapter);
