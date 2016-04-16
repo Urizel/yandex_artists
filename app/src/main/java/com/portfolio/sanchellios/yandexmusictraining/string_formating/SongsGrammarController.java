@@ -1,9 +1,9 @@
-package com.portfolio.sanchellios.yandexmusictraining;
+package com.portfolio.sanchellios.yandexmusictraining.string_formating;
 
 /**
  * Created by aleksandrvasilenko on 16.04.16.
  */
-public class SongsGrammarController extends GrammarController {
+public class SongsGrammarController implements GrammarController {
     @Override
     public String getCorrectString(int capacity) {
         int remainder = capacity % 10;

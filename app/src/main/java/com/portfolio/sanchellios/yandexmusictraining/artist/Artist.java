@@ -1,4 +1,4 @@
-package com.portfolio.sanchellios.yandexmusictraining;
+package com.portfolio.sanchellios.yandexmusictraining.artist;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -84,7 +84,7 @@ public class Artist implements Parcelable{
     }
 
     public String getDescription() {
-        return description;
+        return name + " " + description;
     }
 
     public Cover getCover() {

@@ -1,4 +1,4 @@
-package com.portfolio.sanchellios.yandexmusictraining;
+package com.portfolio.sanchellios.yandexmusictraining.views;
 
 
 import android.content.Intent;
@@ -8,6 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.portfolio.sanchellios.yandexmusictraining.R;
+import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
+import com.portfolio.sanchellios.yandexmusictraining.artist.Oeuvre;
+import com.portfolio.sanchellios.yandexmusictraining.string_formating.ArtistInfoFormatter;
 import com.squareup.picasso.Picasso;
 
 public class DetailedActivity extends AppCompatActivity {

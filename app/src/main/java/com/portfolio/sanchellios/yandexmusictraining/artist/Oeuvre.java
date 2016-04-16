@@ -1,4 +1,6 @@
-package com.portfolio.sanchellios.yandexmusictraining;
+package com.portfolio.sanchellios.yandexmusictraining.artist;
+
+import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
 
 /**
  * Created by aleksandrvasilenko on 16.04.16.

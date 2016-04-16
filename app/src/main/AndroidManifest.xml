@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ListOfArtistsActivity">
+        <activity android:name=".views.ListOfArtistsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,12 +18,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailedActivity"
-            android:parentActivityName=".ListOfArtistsActivity">
+            android:name=".views.DetailedActivity"
+            android:parentActivityName=".views.ListOfArtistsActivity">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListOfArtistsActivity"/>
+                android:value=".views.ListOfArtistsActivity"/>
 
         </activity>
     </application>

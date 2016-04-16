@@ -1,4 +1,4 @@
-package com.portfolio.sanchellios.yandexmusictraining;
+package com.portfolio.sanchellios.yandexmusictraining.views;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.portfolio.sanchellios.yandexmusictraining.R;
+import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
+import com.portfolio.sanchellios.yandexmusictraining.artist.Oeuvre;
+import com.portfolio.sanchellios.yandexmusictraining.string_formating.ArtistInfoFormatter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

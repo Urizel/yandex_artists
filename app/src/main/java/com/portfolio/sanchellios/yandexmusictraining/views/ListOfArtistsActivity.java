@@ -1,4 +1,4 @@
-package com.portfolio.sanchellios.yandexmusictraining;
+package com.portfolio.sanchellios.yandexmusictraining.views;
 
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
@@ -8,6 +8,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.portfolio.sanchellios.yandexmusictraining.R;
+import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
+import com.portfolio.sanchellios.yandexmusictraining.views.ArtistListFragment;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;

@@ -1,4 +1,8 @@
-package com.portfolio.sanchellios.yandexmusictraining;
+package com.portfolio.sanchellios.yandexmusictraining.string_formating;
+
+import com.portfolio.sanchellios.yandexmusictraining.artist.Oeuvre;
+import com.portfolio.sanchellios.yandexmusictraining.string_formating.AlbumsGrammarController;
+import com.portfolio.sanchellios.yandexmusictraining.string_formating.SongsGrammarController;
 
 import java.util.ArrayList;
 import java.util.Iterator;

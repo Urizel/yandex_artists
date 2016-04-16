@@ -1,5 +1,7 @@
 package com.portfolio.sanchellios.yandexmusictraining;
 
+import com.portfolio.sanchellios.yandexmusictraining.string_formating.AlbumsGrammarController;
+
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,5 +1,8 @@
 package com.portfolio.sanchellios.yandexmusictraining;
 
+import com.portfolio.sanchellios.yandexmusictraining.artist.Oeuvre;
+import com.portfolio.sanchellios.yandexmusictraining.string_formating.ArtistInfoFormatter;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
