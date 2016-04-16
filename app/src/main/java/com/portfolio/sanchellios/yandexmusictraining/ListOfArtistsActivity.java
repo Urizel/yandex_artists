@@ -1,5 +1,6 @@
 package com.portfolio.sanchellios.yandexmusictraining;
 
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class ListOfArtistsActivity extends AppCompatActivity {
+public class ListOfArtistsActivity extends AppCompatActivity implements ArtistListFragment.TaskKiller{
     private final String ARTISTS = "ARTISTS";
     private ArrayList<Artist> artists = new ArrayList<>();
     private AsyncTask task;
@@ -24,10 +25,11 @@ public class ListOfArtistsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list_of_artists);
+        final String YANDEX_URL = "http://cache-default04g.cdn.yandex.net/download.cdn.yandex.net/mobilization-2016/artists.json";
         if(savedInstanceState == null){
-            task = new JSONLoader().execute("http://cache-default04g.cdn.yandex.net/download.cdn.yandex.net/mobilization-2016/artists.json");
+            task = new JSONLoader().execute(YANDEX_URL);
         }
     }
 
@@ -42,7 +44,12 @@ public class ListOfArtistsActivity extends AppCompatActivity {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         artists = savedInstanceState.getParcelableArrayList(ARTISTS);
-        Log.d(ARTISTS, "Artists are loaded: " + artists.size() + " instances");
+        try {
+            int size =  artists.size();
+            Log.d(ARTISTS, "Artists are loaded: " + size + " instances");
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     private void initArtistListFrag(){
@@ -53,10 +60,15 @@ public class ListOfArtistsActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        killTask();
+        super.onDestroy();
+    }
+
+    @Override
+    public void killTask(){
         if(task != null){
             task.cancel(false);
         }
-        super.onDestroy();
     }
 
     void setArtists(ArrayList<Artist> artists){
