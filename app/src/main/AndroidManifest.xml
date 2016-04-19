@@ -26,6 +26,8 @@
                 android:value=".views.ListOfArtistsActivity"/>
 
         </activity>
+        <service android:name=".database.ArtistCacheService"
+            android:exported="false"/>
     </application>
 
 </manifest>

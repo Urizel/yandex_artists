@@ -1,6 +1,8 @@
 package com.portfolio.sanchellios.yandexmusictraining.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.portfolio.sanchellios.yandexmusictraining.R;
 import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
 import com.portfolio.sanchellios.yandexmusictraining.artist.Oeuvre;
+import com.portfolio.sanchellios.yandexmusictraining.database.ImageDbManager;
 import com.portfolio.sanchellios.yandexmusictraining.string_formating.ArtistInfoFormatter;
 import com.squareup.picasso.Picasso;
 
@@ -65,6 +68,8 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
                 .fit()
                 .centerInside()
                 .into(smallCover);
+
+        //saveImageToDb(smallCover);
         name.setText(artist.getName());
         genres.setText(ArtistInfoFormatter.formGenreString(artist.getGenres()));
         songsAndAlbums.setText(
@@ -77,6 +82,13 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
                 }
             }
         });
+
+    }
+
+    private void saveImageToDb(ImageView smallCover){
+        Bitmap bitmap = ((BitmapDrawable)smallCover.getDrawable()).getBitmap();
+        ImageDbManager imageDbManager = new ImageDbManager(context);
+        imageDbManager.insertSmallCoverIntoDb(bitmap);
 
     }
 

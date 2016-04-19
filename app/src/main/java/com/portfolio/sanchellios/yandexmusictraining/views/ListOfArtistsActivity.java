@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.portfolio.sanchellios.yandexmusictraining.R;
 import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
-import com.portfolio.sanchellios.yandexmusictraining.views.ArtistListFragment;
+import com.portfolio.sanchellios.yandexmusictraining.database.DatabaseHelper;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -30,6 +30,11 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list_of_artists);
+
+        //          FOR DEBUG - > DELETE AFTER
+        truncateTables();
+
+
         final String YANDEX_URL = "http://cache-default04g.cdn.yandex.net/download.cdn.yandex.net/mobilization-2016/artists.json";
         if(savedInstanceState == null){
             task = new JSONLoader().execute(YANDEX_URL);
@@ -61,6 +66,11 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
                 .commit();
     }
 
+    private void truncateTables(){
+        DatabaseHelper helper = DatabaseHelper.getInstance(getApplicationContext());
+        helper.deleteFromTables();
+    }
+
     @Override
     protected void onDestroy() {
         killTask();
@@ -72,6 +82,11 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
         if(task != null){
             task.cancel(false);
         }
+    }
+
+    @Override
+    public ArrayList<Artist> getArtistList() {
+        return this.artists;
     }
 
     void setArtists(ArrayList<Artist> artists){

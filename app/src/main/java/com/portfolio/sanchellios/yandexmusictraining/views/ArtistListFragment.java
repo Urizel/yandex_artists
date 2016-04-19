@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.portfolio.sanchellios.yandexmusictraining.R;
 import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
+import com.portfolio.sanchellios.yandexmusictraining.database.ArtistCacheService;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class ArtistListFragment extends Fragment {
 
     public interface TaskKiller{
         void killTask();
+        ArrayList<Artist> getArtistList();
     }
 
     @Override
@@ -61,6 +63,11 @@ public class ArtistListFragment extends Fragment {
             @Override
             public void onClick(Artist artist){
                 killer.killTask();
+
+                Intent intentService = new Intent(getActivity(), ArtistCacheService.class);
+                intentService.putExtra(ArtistCacheService.ARTIST_LIST, killer.getArtistList());
+                getActivity().startService(intentService);
+
                 Intent intent = new Intent(getActivity(), DetailedActivity.class);
                 intent.putExtra(DetailedActivity.ARTIST, artist);
                 getActivity().startActivity(intent);

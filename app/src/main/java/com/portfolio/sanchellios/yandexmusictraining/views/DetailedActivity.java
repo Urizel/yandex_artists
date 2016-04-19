@@ -3,6 +3,8 @@ package com.portfolio.sanchellios.yandexmusictraining.views;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import com.portfolio.sanchellios.yandexmusictraining.R;
 import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
 import com.portfolio.sanchellios.yandexmusictraining.artist.Oeuvre;
+import com.portfolio.sanchellios.yandexmusictraining.database.ImageDbManager;
 import com.portfolio.sanchellios.yandexmusictraining.string_formating.ArtistInfoFormatter;
 import com.squareup.picasso.Picasso;
 
@@ -32,6 +35,12 @@ public class DetailedActivity extends AppCompatActivity {
         getArtistFromIntent();
         initTheActivityElements();
         populateTheScreenWithData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        //saveCoverToDb();
+        super.onDestroy();
     }
 
     private void getArtistFromIntent(){
@@ -62,5 +71,11 @@ public class DetailedActivity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_music_note_black_48dp)
                 .error(R.drawable.unknown_artist)
                 .into(cover);
+    }
+
+    private void saveCoverToDb(){
+        Bitmap bitmap = ((BitmapDrawable)cover.getDrawable()).getBitmap();
+        ImageDbManager imageDbManager = new ImageDbManager(getApplicationContext());
+        imageDbManager.insertSmallCoverIntoDb(bitmap);
     }
 }

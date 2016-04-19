@@ -9,6 +9,7 @@ import android.os.Parcelable;
 public class Cover implements Parcelable{
     private String small;
     private String big;
+
     public Cover(String small, String big){
         this.small = small;
         this.big = big;
@@ -32,12 +33,10 @@ public class Cover implements Parcelable{
     };
 
     public String getSmallCover() {
-        //TODO:We should get a image
         return small;
     }
 
     public String getBigCover() {
-        //TODO:We should get a image
         return big;
     }
 
