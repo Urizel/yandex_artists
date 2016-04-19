@@ -12,20 +12,21 @@ import static com.portfolio.sanchellios.yandexmusictraining.database.DBContracts
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String DATABASE_NAME = "artists.db";
-    public static final int SCHEMA = 2;
+    public static final int SCHEMA = 4;
     private static DatabaseHelper instance = null;
 
     final String SQL_CREATE_ARTIST_TABLE_SCRIPT =
             "CREATE TABLE " + ArtistTable.TABLE_NAME + " (" +
-                    ArtistTable._ID + " INTEGER PRIMARY KEY NOT NULL," +
+                    ArtistTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     ArtistTable.NAME + " TEXT NOT NULL," +
                     ArtistTable.GENRES + " TEXT NOT NULL," +
                     ArtistTable.TRACKS + " INTEGER NOT NULL," +
                     ArtistTable.ALBUMS + " INTEGER NOT NULL," +
-                    ArtistTable.LINK + " TEXT," +                   //Was changed from TEXT NOT NULL
+                    ArtistTable.LINK + " TEXT," +
                     ArtistTable.DESCRIPTION + " TEXT NOT NULL," +
-                    ArtistTable.SMALL_COVER + " TEXT NOT NULL," +   //Was changed from BLOB NOT NULL
-                    ArtistTable.BIG_COVER + " TEXT NOT NULL);";     //Was changed from BLOB NOT NULL
+                    ArtistTable.SMALL_COVER + " TEXT NOT NULL," +
+                    ArtistTable.BIG_COVER + " TEXT NOT NULL, " +
+                    ArtistTable.ARTIST_ID + " INTEGER" +");";
     final String SQL_CREATE_CACHE_REG_TABLE_SCRIPT =
             "CREATE TABLE " + CacheRegistryTable.TABLE_NAME + " (" +
                     CacheRegistryTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -35,7 +36,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     ImageBlobsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     ImageBlobsTable.ARTIST_ID + " INTEGER NOT_NULL, " +
                     ImageBlobsTable.SMALL_COVER_BLOB + " BLOB NOT NULL, " +
-                    ImageBlobsTable.BIG_COVER_BLOB + " BLOB NOT NULL);";
+                    ImageBlobsTable.BIG_COVER_BLOB + " BLOB NOT NULL, " +
+                    ImageBlobsTable.ARTIST_NAME + " TEXT NOT NULL);";
 
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, SCHEMA);
@@ -64,6 +66,19 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         if(oldVersion == 1 && newVersion == 2){
             db.execSQL(ALTER_TABLE + _ + ArtistTable.TABLE_NAME + _ + "RENAME TO" + _ + TMP_TABLE + ";");
             db.execSQL(SQL_CREATE_ARTIST_TABLE_SCRIPT);
+            db.execSQL(DROP_TABLE + _ + TMP_TABLE + ";");
+        }
+
+        if(oldVersion == 2 && newVersion == 3){
+            db.execSQL(SQL_CREATE_IMAGE_BLOBS_TABLE_SCRIPT);
+        }
+
+        if(oldVersion == 3 && newVersion == 4){
+            db.execSQL(ALTER_TABLE + _ + ArtistTable.TABLE_NAME + _ + "RENAME TO" + _ + TMP_TABLE + ";");
+            db.execSQL(SQL_CREATE_ARTIST_TABLE_SCRIPT);
+            db.execSQL(DROP_TABLE + _ + TMP_TABLE + ";");
+            db.execSQL(ALTER_TABLE + _ + ImageBlobsTable.TABLE_NAME + _ + "RENAME TO" + _ + TMP_TABLE + ";");
+            db.execSQL(SQL_CREATE_IMAGE_BLOBS_TABLE_SCRIPT);
             db.execSQL(DROP_TABLE + _ + TMP_TABLE + ";");
         }
     }

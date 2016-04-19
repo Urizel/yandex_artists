@@ -21,21 +21,24 @@ import java.util.ArrayList;
  * Created by Alexander Vasilenko on 10.04.16.
  */
 public class ArtistListFragment extends Fragment {
+    public static final String SAVE_TO_DB_STATE = "SAVE_TO_DB_STATE";
+    public static final String IGNORE_SAVE = "IGNORE_SAVE";
     private static final String ARTISTS = "ARTISTS";
     private static final String RECYCLER_ARTIST = "RECYCLER_ARTIST";
     private ArrayList<Artist> artists = new ArrayList<>();
     private RecyclerView artistRecycler;
-    private TaskKiller killer;
+    private ArtistListViewer viewer;
 
-    public interface TaskKiller{
+    public interface ArtistListViewer {
         void killTask();
         ArrayList<Artist> getArtistList();
+        String getArtistSaveToDbState();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        killer = (TaskKiller)context;
+        viewer = (ArtistListViewer)context;
     }
 
     public static ArtistListFragment newInstance(ArrayList<Artist> artists){
@@ -62,12 +65,16 @@ public class ArtistListFragment extends Fragment {
         adapter.setListener(new ArtistListAdapter.ArtistClickListener(){
             @Override
             public void onClick(Artist artist){
-                killer.killTask();
-
-                Intent intentService = new Intent(getActivity(), ArtistCacheService.class);
-                intentService.putExtra(ArtistCacheService.ARTIST_LIST, killer.getArtistList());
-                getActivity().startService(intentService);
-
+                viewer.killTask();
+                if(viewer.getArtistSaveToDbState().equals(SAVE_TO_DB_STATE)){
+                    Intent intentService;
+                    ArrayList<Artist> artists = viewer.getArtistList();
+                    for(int i = 0; i < artists.size(); i++){
+                        intentService = new Intent(getActivity(), ArtistCacheService.class);
+                        intentService.putExtra(ArtistCacheService.ARTIST, artists.get(i));
+                        getActivity().startService(intentService);
+                    }
+                }
                 Intent intent = new Intent(getActivity(), DetailedActivity.class);
                 intent.putExtra(DetailedActivity.ARTIST, artist);
                 getActivity().startActivity(intent);

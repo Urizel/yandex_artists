@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.portfolio.sanchellios.yandexmusictraining.R;
 import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
-import com.portfolio.sanchellios.yandexmusictraining.database.DatabaseHelper;
+import com.portfolio.sanchellios.yandexmusictraining.database.ArtistDbManager;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -20,25 +20,52 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class ListOfArtistsActivity extends AppCompatActivity implements ArtistListFragment.TaskKiller{
+public class ListOfArtistsActivity extends AppCompatActivity implements ArtistListFragment.ArtistListViewer {
+    private String saveArtistListToDbState = ArtistListFragment.SAVE_TO_DB_STATE;
     private final String ARTISTS = "ARTISTS";
     private ArrayList<Artist> artists = new ArrayList<>();
     private AsyncTask task;
+    private final String LOAD_ARTISTS = "Load artists: ";
+    private final String YANDEX_URL = "http://cache-default04g.cdn.yandex.net/download.cdn.yandex.net/mobilization-2016/artists.json";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list_of_artists);
-
-        //          FOR DEBUG - > DELETE AFTER
-        truncateTables();
-
-
-        final String YANDEX_URL = "http://cache-default04g.cdn.yandex.net/download.cdn.yandex.net/mobilization-2016/artists.json";
+        //
+        //DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
+        //databaseHelper.deleteFromTables();
         if(savedInstanceState == null){
-            task = new JSONLoader().execute(YANDEX_URL);
+
+            TimeEvaluator timeEvaluator = new TimeEvaluator(getApplicationContext());
+            if(timeEvaluator.shouldRegisterTime()){
+                loadArtistsFromInternet(timeEvaluator);
+            }else {
+                if(ArtistDbManager.getArtistCount(getApplicationContext()) > 0){
+                    loadArtistsFromDb();
+                }else {
+
+                    loadArtistsFromInternet(timeEvaluator);
+                }
+            }
         }
+    }
+
+    private void loadArtistsFromInternet(TimeEvaluator timeEvaluator){
+        saveArtistListToDbState = ArtistListFragment.SAVE_TO_DB_STATE;
+        Log.d(LOAD_ARTISTS, "loading from Internet");
+        timeEvaluator.registerCurrentTimeToDb();
+        task = new JSONLoader().execute(YANDEX_URL);
+    }
+
+    private void loadArtistsFromDb(){
+        Log.d(LOAD_ARTISTS, "loading from Database");
+        saveArtistListToDbState = ArtistListFragment.IGNORE_SAVE;
+        ArtistDbManager artistDbManager = new ArtistDbManager(getApplicationContext());
+        artists = artistDbManager.getArtistsFromDb();
+        initArtistListFrag();
     }
 
     @Override
@@ -66,11 +93,6 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
                 .commit();
     }
 
-    private void truncateTables(){
-        DatabaseHelper helper = DatabaseHelper.getInstance(getApplicationContext());
-        helper.deleteFromTables();
-    }
-
     @Override
     protected void onDestroy() {
         killTask();
@@ -87,6 +109,11 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
     @Override
     public ArrayList<Artist> getArtistList() {
         return this.artists;
+    }
+
+    @Override
+    public String getArtistSaveToDbState() {
+        return saveArtistListToDbState;
     }
 
     void setArtists(ArrayList<Artist> artists){

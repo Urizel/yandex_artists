@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.portfolio.sanchellios.yandexmusictraining.database.DatabaseHelper;
 
@@ -36,6 +37,7 @@ public class TimeEvaluator {
                 null);
         cursor.moveToFirst();
         if(cursor.getCount() > 0){
+            Log.d("Counting registry: ", "" + cursor.getCount());
             String time = cursor.getString(cursor.getColumnIndex(TIME));
             TimeHolder timeFromDb = parseTimeString(time);
             cursor.close();
@@ -61,7 +63,7 @@ public class TimeEvaluator {
     }
 
     private boolean isFifteenMinPassed(TimeHolder registeredTime){
-        if(currentTime.hours > registeredTime.hours){
+        if(currentTime.hours < registeredTime.hours){
             return true;
         }else if((currentTime.minutes - registeredTime.minutes) > 15){
             return true;

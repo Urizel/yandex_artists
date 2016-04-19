@@ -16,6 +16,7 @@ public class DBContracts {
         public static final String DESCRIPTION = "description";
         public static final String SMALL_COVER = "small_cover";
         public static final String BIG_COVER = "big_cover";
+        public static final String ARTIST_ID = "artist_id";
     }
 
     public static final class CacheRegistryTable implements BaseColumns{
@@ -28,5 +29,6 @@ public class DBContracts {
         public static final String ARTIST_ID = "artist_id";
         public static final String SMALL_COVER_BLOB = "small_cover";
         public static final String BIG_COVER_BLOB = "big_cover";
+        public static final String ARTIST_NAME = "artist_name";
     }
 }
