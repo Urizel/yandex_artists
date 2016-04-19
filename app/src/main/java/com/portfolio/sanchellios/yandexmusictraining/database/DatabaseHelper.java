@@ -74,6 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = instance.getWritableDatabase();
         db.execSQL(DELETE_FROM + ArtistTable.TABLE_NAME + END);
         db.execSQL(DELETE_FROM + CacheRegistryTable.TABLE_NAME + END);
+        db.execSQL(DELETE_FROM + ImageBlobsTable.TABLE_NAME + END);
         Log.d(DELETE_FROM, "tables are truncated");
     }
 }
