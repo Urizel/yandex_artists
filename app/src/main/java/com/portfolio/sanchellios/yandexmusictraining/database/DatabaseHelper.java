@@ -12,7 +12,7 @@ import static com.portfolio.sanchellios.yandexmusictraining.database.DBContracts
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String DATABASE_NAME = "artists.db";
-    public static final int SCHEMA = 4;
+    public static final int SCHEMA = 5;
     private static DatabaseHelper instance = null;
 
     final String SQL_CREATE_ARTIST_TABLE_SCRIPT =
@@ -24,20 +24,25 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     ArtistTable.ALBUMS + " INTEGER NOT NULL," +
                     ArtistTable.LINK + " TEXT," +
                     ArtistTable.DESCRIPTION + " TEXT NOT NULL," +
-                    ArtistTable.SMALL_COVER + " TEXT NOT NULL," +
-                    ArtistTable.BIG_COVER + " TEXT NOT NULL, " +
+                    ArtistTable.SMALL_COVER_LINK + " TEXT NOT NULL," +
+                    ArtistTable.BIG_COVER_LINK + " TEXT NOT NULL, " +
                     ArtistTable.ARTIST_ID + " INTEGER" +");";
     final String SQL_CREATE_CACHE_REG_TABLE_SCRIPT =
             "CREATE TABLE " + CacheRegistryTable.TABLE_NAME + " (" +
                     CacheRegistryTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     CacheRegistryTable.TIME + " TEXT NOT NULL);";
-    final String SQL_CREATE_IMAGE_BLOBS_TABLE_SCRIPT =
-            "CREATE TABLE " + ImageBlobsTable.TABLE_NAME + " (" +
-                    ImageBlobsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    ImageBlobsTable.ARTIST_ID + " INTEGER NOT_NULL, " +
-                    ImageBlobsTable.SMALL_COVER_BLOB + " BLOB NOT NULL, " +
-                    ImageBlobsTable.BIG_COVER_BLOB + " BLOB NOT NULL, " +
-                    ImageBlobsTable.ARTIST_NAME + " TEXT NOT NULL);";
+    final String SQL_CREATE_SMALL_COVER_TABLE_SCRIPT =
+            "CREATE TABLE " + SmallCoverTable.TABLE_NAME + " (" +
+                    SmallCoverTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    SmallCoverTable.COVER + " BLOB NOT NULL, " +
+                    SmallCoverTable.ARTIST_NAME + " TEXT NOT NULL, "+
+                    SmallCoverTable.ARTIST_ID + " INTEGER NOT_NULL);";
+    final String SQL_CREATE_BIG_COVER_TABLE_SCRIPT =
+            "CREATE TABLE " + BigCoverTable.TABLE_NAME + " (" +
+                    BigCoverTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    BigCoverTable.COVER + " BLOB NOT NULL, " +
+                    BigCoverTable.ARTIST_NAME + " TEXT NOT NULL, "+
+                    BigCoverTable.ARTIST_ID + " INTEGER NOT_NULL);";
 
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, SCHEMA);
@@ -54,7 +59,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ARTIST_TABLE_SCRIPT);
         db.execSQL(SQL_CREATE_CACHE_REG_TABLE_SCRIPT);
-        db.execSQL(SQL_CREATE_IMAGE_BLOBS_TABLE_SCRIPT);
+        db.execSQL(SQL_CREATE_SMALL_COVER_TABLE_SCRIPT);
+        db.execSQL(SQL_CREATE_BIG_COVER_TABLE_SCRIPT);
     }
 
     @Override
@@ -69,17 +75,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             db.execSQL(DROP_TABLE + _ + TMP_TABLE + ";");
         }
 
-        if(oldVersion == 2 && newVersion == 3){
-            db.execSQL(SQL_CREATE_IMAGE_BLOBS_TABLE_SCRIPT);
-        }
-
         if(oldVersion == 3 && newVersion == 4){
             db.execSQL(ALTER_TABLE + _ + ArtistTable.TABLE_NAME + _ + "RENAME TO" + _ + TMP_TABLE + ";");
             db.execSQL(SQL_CREATE_ARTIST_TABLE_SCRIPT);
             db.execSQL(DROP_TABLE + _ + TMP_TABLE + ";");
-            db.execSQL(ALTER_TABLE + _ + ImageBlobsTable.TABLE_NAME + _ + "RENAME TO" + _ + TMP_TABLE + ";");
-            db.execSQL(SQL_CREATE_IMAGE_BLOBS_TABLE_SCRIPT);
-            db.execSQL(DROP_TABLE + _ + TMP_TABLE + ";");
+        }
+
+        if(oldVersion == 4 && newVersion == 5){
+            //db.execSQL(DROP_TABLE + _ + "image_blob_table" + ";");
+            db.execSQL(SQL_CREATE_SMALL_COVER_TABLE_SCRIPT);
+            db.execSQL(SQL_CREATE_BIG_COVER_TABLE_SCRIPT);
         }
     }
 
@@ -89,7 +94,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = instance.getWritableDatabase();
         db.execSQL(DELETE_FROM + ArtistTable.TABLE_NAME + END);
         db.execSQL(DELETE_FROM + CacheRegistryTable.TABLE_NAME + END);
-        db.execSQL(DELETE_FROM + ImageBlobsTable.TABLE_NAME + END);
+        db.execSQL(DELETE_FROM + SmallCoverTable.TABLE_NAME + END);
+        db.execSQL(DELETE_FROM + BigCoverTable.TABLE_NAME + END);
         Log.d(DELETE_FROM, "tables are truncated");
     }
 }

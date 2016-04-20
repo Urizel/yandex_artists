@@ -28,6 +28,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
     private ArrayList<Artist> artists;
     private Context context;
     private ArtistClickListener listener;
+    private ImageDbManager imageDbManager;
 
     public static interface ArtistClickListener{
         public void onClick(Artist artist);
@@ -36,6 +37,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
     public ArtistListAdapter(ArrayList<Artist> artists, Context context){
         this.context = context;
         this.artists = artists;
+        this.imageDbManager = new ImageDbManager(context);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -56,40 +58,51 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         CardView cardView = holder.cardView;
+
         ImageView smallCover = (ImageView)cardView.findViewById(R.id.small_artist_image);
         TextView name = (TextView)cardView.findViewById(R.id.artist_name);
         TextView genres = (TextView)cardView.findViewById(R.id.artist_styles);
         TextView songsAndAlbums = (TextView)cardView.findViewById(R.id.albums_and_songs);
 
         final Artist artist = artists.get(position);
-        Picasso.with(context)
-                .load(artist.getCover().getSmallCover())
-                .placeholder(R.drawable.ic_music_note_black_48dp)
-                .fit()
-                .centerInside()
-                .into(smallCover);
+        if(imageDbManager.isImageExistInDb(artist.getId(), ImageDbManager.SMALL_COVER)){
+            Picasso.with(context)
+                    .load(artist.getCover().getSmallCover())
+                    .placeholder(R.drawable.ic_music_note_black_48dp)
+                    .fit()
+                    .centerInside()
+                    .into(smallCover);
 
-        //saveImageToDb(smallCover);
-        name.setText(artist.getName());
-        genres.setText(ArtistInfoFormatter.formGenreString(artist.getGenres()));
-        songsAndAlbums.setText(
-                ArtistInfoFormatter.getAlbumsAndSongsForCard(new Oeuvre(artist)));
+            //saveImageToDb(smallCover, artist);
+        }else {
+            //smallCover.setImageBitmap(imageDbManager.getSmallCoverFromDb(artist.getId(), artist.getName()));
+        }
+
+        fillScreenWithData(artist, name, genres, songsAndAlbums);
+
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(listener != null){
+                if (listener != null) {
                     listener.onClick(artist);
                 }
             }
         });
-
     }
 
-    private void saveImageToDb(ImageView smallCover){
-        Bitmap bitmap = ((BitmapDrawable)smallCover.getDrawable()).getBitmap();
-        ImageDbManager imageDbManager = new ImageDbManager(context);
-        imageDbManager.insertSmallCoverIntoDb(bitmap);
+    private void fillScreenWithData(Artist artist,
+                                    TextView name,
+                                    TextView genres,
+                                    TextView songsAndAlbums){
+        name.setText(artist.getName());
+        genres.setText(ArtistInfoFormatter.formGenreString(artist.getGenres()));
+        songsAndAlbums.setText(
+                ArtistInfoFormatter.getAlbumsAndSongsForCard(new Oeuvre(artist)));
+    }
 
+    private void saveImageToDb(ImageView smallCover, Artist artist){
+        Bitmap bitmap = ((BitmapDrawable)smallCover.getDrawable()).getBitmap();
+        imageDbManager.insertSmallCoverIntoDb(bitmap, artist);
     }
 
     public void setListener(ArtistClickListener listener){

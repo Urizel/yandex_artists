@@ -1,7 +1,5 @@
 package com.portfolio.sanchellios.yandexmusictraining.views;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 /**
@@ -10,9 +8,7 @@ import org.junit.Test;
 public class TimeEvaluatorTest {
     @Test
     public void testGetTimeInString(){
-        TimeEvaluator te = new TimeEvaluator();
-        System.out.println(te.getCurrentTime());
-        Assert.assertNotNull(te.getCurrentTime());
+
     }
 
 }

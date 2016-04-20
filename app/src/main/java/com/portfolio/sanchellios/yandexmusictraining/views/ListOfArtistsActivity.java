@@ -11,6 +11,7 @@ import com.google.gson.stream.JsonReader;
 import com.portfolio.sanchellios.yandexmusictraining.R;
 import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
 import com.portfolio.sanchellios.yandexmusictraining.database.ArtistDbManager;
+import com.portfolio.sanchellios.yandexmusictraining.database.DatabaseHelper;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -34,9 +35,10 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list_of_artists);
-        //
-        //DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
-        //databaseHelper.deleteFromTables();
+
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
+        databaseHelper.deleteFromTables();
+
         if(savedInstanceState == null){
 
             TimeEvaluator timeEvaluator = new TimeEvaluator(getApplicationContext());

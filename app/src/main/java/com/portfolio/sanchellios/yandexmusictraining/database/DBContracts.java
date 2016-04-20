@@ -14,8 +14,8 @@ public class DBContracts {
         public static final String ALBUMS = "albums";
         public static final String LINK = "link";
         public static final String DESCRIPTION = "description";
-        public static final String SMALL_COVER = "small_cover";
-        public static final String BIG_COVER = "big_cover";
+        public static final String SMALL_COVER_LINK = "small_cover";
+        public static final String BIG_COVER_LINK = "big_cover";
         public static final String ARTIST_ID = "artist_id";
     }
 
@@ -24,11 +24,17 @@ public class DBContracts {
         public static final String TIME = "time";
     }
 
-    public static final class ImageBlobsTable implements BaseColumns{
-        public static final String TABLE_NAME = "image_blobs";
-        public static final String ARTIST_ID = "artist_id";
-        public static final String SMALL_COVER_BLOB = "small_cover";
-        public static final String BIG_COVER_BLOB = "big_cover";
+    public static class CoverTable implements BaseColumns {
+        public static final String COVER = "cover";
         public static final String ARTIST_NAME = "artist_name";
+        public static final String ARTIST_ID = "artist_id";
+    }
+
+    public static final class SmallCoverTable extends CoverTable implements BaseColumns{
+        public static final String TABLE_NAME = "small_cover";
+    }
+
+    public static final class BigCoverTable extends CoverTable implements BaseColumns{
+        public static final String TABLE_NAME = "big_cover";
     }
 }

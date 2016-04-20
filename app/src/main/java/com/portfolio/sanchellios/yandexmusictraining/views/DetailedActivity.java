@@ -76,6 +76,6 @@ public class DetailedActivity extends AppCompatActivity {
     private void saveCoverToDb(){
         Bitmap bitmap = ((BitmapDrawable)cover.getDrawable()).getBitmap();
         ImageDbManager imageDbManager = new ImageDbManager(getApplicationContext());
-        imageDbManager.insertSmallCoverIntoDb(bitmap);
+        imageDbManager.insertSmallCoverIntoDb(bitmap, artist);
     }
 }

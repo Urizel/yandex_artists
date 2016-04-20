@@ -46,8 +46,8 @@ public class ArtistDbManager {
             values.put(ArtistTable.ALBUMS, artist.getNumberOfAlbums());
             values.put(ArtistTable.LINK, artist.getLink());
             values.put(ArtistTable.DESCRIPTION, artist.getDescription());
-            values.put(ArtistTable.SMALL_COVER, artist.getCover().getSmallCover());
-            values.put(ArtistTable.BIG_COVER, artist.getCover().getBigCover());
+            values.put(ArtistTable.SMALL_COVER_LINK, artist.getCover().getSmallCover());
+            values.put(ArtistTable.BIG_COVER_LINK, artist.getCover().getBigCover());
             db.insert(ArtistTable.TABLE_NAME,
                     null,
                     values);
@@ -106,8 +106,8 @@ public class ArtistDbManager {
 
     private Cover getCoverURLs(Cursor cursor){
         String smallCover, bigCover;
-        smallCover = cursor.getString(cursor.getColumnIndex(ArtistTable.SMALL_COVER));
-        bigCover = cursor.getString(cursor.getColumnIndex(ArtistTable.BIG_COVER));
+        smallCover = cursor.getString(cursor.getColumnIndex(ArtistTable.SMALL_COVER_LINK));
+        bigCover = cursor.getString(cursor.getColumnIndex(ArtistTable.BIG_COVER_LINK));
         return new Cover(smallCover, bigCover);
     }
 
