@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -28,7 +31,7 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
     private AsyncTask task;
     private final String LOAD_ARTISTS = "Load artists: ";
     private final String YANDEX_URL = "http://cache-default04g.cdn.yandex.net/download.cdn.yandex.net/mobilization-2016/artists.json";
-
+    private TimeEvaluator timeEvaluator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +39,40 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list_of_artists);
 
-        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
-        databaseHelper.deleteFromTables();
-
         if(savedInstanceState == null){
-
-            TimeEvaluator timeEvaluator = new TimeEvaluator(getApplicationContext());
+            timeEvaluator = new TimeEvaluator(getApplicationContext());
             if(timeEvaluator.shouldRegisterTime()){
                 loadArtistsFromInternet(timeEvaluator);
             }else {
                 if(ArtistDbManager.getArtistCount(getApplicationContext()) > 0){
                     loadArtistsFromDb();
                 }else {
-
                     loadArtistsFromInternet(timeEvaluator);
                 }
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh_button:
+                DatabaseHelper dbHelper = DatabaseHelper.getInstance(getApplicationContext());
+                dbHelper.deleteFromTables();
+                if (timeEvaluator == null) {
+                    timeEvaluator = new TimeEvaluator(getApplicationContext());
+                }
+                loadArtistsFromInternet(timeEvaluator);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

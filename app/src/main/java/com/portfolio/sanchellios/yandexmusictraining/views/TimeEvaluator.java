@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.portfolio.sanchellios.yandexmusictraining.database.DBContracts;
 import com.portfolio.sanchellios.yandexmusictraining.database.DatabaseHelper;
 
 import java.util.Calendar;
@@ -25,15 +26,12 @@ public class TimeEvaluator {
     public TimeEvaluator(Context context){
         dbHelper = DatabaseHelper.getInstance(context);
         calendar = Calendar.getInstance();
-        currentTime = new TimeHolder(
-                calendar.get(Calendar.MINUTE),
-                calendar.get(Calendar.HOUR)
-        );
+        updateTime();
     }
 
     public boolean shouldRegisterTime(){
         db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + ";",
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DBContracts.CacheRegistryTable.TABLE_NAME + ";",
                 null);
         cursor.moveToFirst();
         if(cursor.getCount() > 0){
@@ -46,7 +44,6 @@ public class TimeEvaluator {
             cursor.close();
             return true;
         }
-
     }
 
     public void registerCurrentTimeToDb(){
@@ -59,11 +56,15 @@ public class TimeEvaluator {
     }
 
     public String getCurrentTime(){
-        return ""+currentTime.hours+":"+currentTime.minutes;
+        return ""+currentTime.dayOfWeek+":"+currentTime.hours+":"+currentTime.minutes;
     }
 
     private boolean isFifteenMinPassed(TimeHolder registeredTime){
-        if(currentTime.hours < registeredTime.hours){
+        if(currentTime.dayOfWeek != registeredTime.dayOfWeek){
+            return true;
+        }
+
+        if(currentTime.hours > registeredTime.hours){
             return true;
         }else if((currentTime.minutes - registeredTime.minutes) > 15){
             return true;
@@ -74,15 +75,17 @@ public class TimeEvaluator {
 
     private TimeHolder parseTimeString(String time){
         String[] tokens = time.split(":");
-        int hours = Integer.parseInt(tokens[0]);
-        int minutes = Integer.parseInt(tokens[1]);
-        return new TimeHolder(hours, minutes);
+        int dayOfWeek = Integer.parseInt(tokens[0]);
+        int hours = Integer.parseInt(tokens[1]);
+        int minutes = Integer.parseInt(tokens[2]);
+        return new TimeHolder(dayOfWeek, hours, minutes);
     }
 
     private void updateTime(){
-        currentTime.hours = calendar.get(Calendar.HOUR);
-        currentTime.minutes = calendar.get(Calendar.MINUTE);
+        currentTime = new TimeHolder(
+                calendar.get(Calendar.DAY_OF_WEEK),
+                calendar.get(Calendar.HOUR),
+                calendar.get(Calendar.MINUTE)
+        );
     }
-
-
 }
