@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * Created by Alexander Vasilenko on 10.04.16.
  */
 public class ArtistListFragment extends Fragment {
+    private static final int VERTICAL_ITEM_SPACE = 2;
     public static final String SAVE_TO_DB_STATE = "SAVE_TO_DB_STATE";
     public static final String IGNORE_SAVE = "IGNORE_SAVE";
     private static final String ARTISTS = "ARTISTS";
@@ -80,6 +81,7 @@ public class ArtistListFragment extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
+        artistRecycler.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
         artistRecycler.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         artistRecycler.setLayoutManager(layoutManager);
