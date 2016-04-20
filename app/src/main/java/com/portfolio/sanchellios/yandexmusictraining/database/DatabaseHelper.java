@@ -31,18 +31,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             "CREATE TABLE " + CacheRegistryTable.TABLE_NAME + " (" +
                     CacheRegistryTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     CacheRegistryTable.TIME + " TEXT NOT NULL);";
-    final String SQL_CREATE_SMALL_COVER_TABLE_SCRIPT =
-            "CREATE TABLE " + SmallCoverTable.TABLE_NAME + " (" +
-                    SmallCoverTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    SmallCoverTable.COVER + " BLOB NOT NULL, " +
-                    SmallCoverTable.ARTIST_NAME + " TEXT NOT NULL, "+
-                    SmallCoverTable.ARTIST_ID + " INTEGER NOT_NULL);";
-    final String SQL_CREATE_BIG_COVER_TABLE_SCRIPT =
-            "CREATE TABLE " + BigCoverTable.TABLE_NAME + " (" +
-                    BigCoverTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    BigCoverTable.COVER + " BLOB NOT NULL, " +
-                    BigCoverTable.ARTIST_NAME + " TEXT NOT NULL, "+
-                    BigCoverTable.ARTIST_ID + " INTEGER NOT_NULL);";
 
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, SCHEMA);
@@ -59,8 +47,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ARTIST_TABLE_SCRIPT);
         db.execSQL(SQL_CREATE_CACHE_REG_TABLE_SCRIPT);
-        db.execSQL(SQL_CREATE_SMALL_COVER_TABLE_SCRIPT);
-        db.execSQL(SQL_CREATE_BIG_COVER_TABLE_SCRIPT);
     }
 
     @Override
@@ -81,10 +67,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             db.execSQL(DROP_TABLE + _ + TMP_TABLE + ";");
         }
 
-        if(oldVersion == 4 && newVersion == 5){
-            //db.execSQL(DROP_TABLE + _ + "image_blob_table" + ";");
-            db.execSQL(SQL_CREATE_SMALL_COVER_TABLE_SCRIPT);
-            db.execSQL(SQL_CREATE_BIG_COVER_TABLE_SCRIPT);
+        if(oldVersion == 5 && newVersion == 6){
+            db.execSQL(DROP_TABLE + _ + "big_cover" + ";");
+            db.execSQL(DROP_TABLE + _ + "small_cover" + ";");
         }
     }
 
@@ -94,8 +79,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = instance.getWritableDatabase();
         db.execSQL(DELETE_FROM + ArtistTable.TABLE_NAME + END);
         db.execSQL(DELETE_FROM + CacheRegistryTable.TABLE_NAME + END);
-        db.execSQL(DELETE_FROM + SmallCoverTable.TABLE_NAME + END);
-        db.execSQL(DELETE_FROM + BigCoverTable.TABLE_NAME + END);
         Log.d(DELETE_FROM, "tables are truncated");
     }
 }

@@ -1,8 +1,6 @@
 package com.portfolio.sanchellios.yandexmusictraining.views;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 import com.portfolio.sanchellios.yandexmusictraining.R;
 import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
 import com.portfolio.sanchellios.yandexmusictraining.artist.Oeuvre;
-import com.portfolio.sanchellios.yandexmusictraining.database.ImageDbManager;
 import com.portfolio.sanchellios.yandexmusictraining.string_formating.ArtistInfoFormatter;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +25,6 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
     private ArrayList<Artist> artists;
     private Context context;
     private ArtistClickListener listener;
-    private ImageDbManager imageDbManager;
 
     public static interface ArtistClickListener{
         public void onClick(Artist artist);
@@ -37,7 +33,6 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
     public ArtistListAdapter(ArrayList<Artist> artists, Context context){
         this.context = context;
         this.artists = artists;
-        this.imageDbManager = new ImageDbManager(context);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -65,18 +60,12 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
         TextView songsAndAlbums = (TextView)cardView.findViewById(R.id.albums_and_songs);
 
         final Artist artist = artists.get(position);
-        if(imageDbManager.isImageExistInDb(artist.getId(), ImageDbManager.SMALL_COVER)){
-            Picasso.with(context)
-                    .load(artist.getCover().getSmallCover())
-                    .placeholder(R.drawable.ic_music_note_black_48dp)
-                    .fit()
-                    .centerInside()
-                    .into(smallCover);
-
-            //saveImageToDb(smallCover, artist);
-        }else {
-            //smallCover.setImageBitmap(imageDbManager.getSmallCoverFromDb(artist.getId(), artist.getName()));
-        }
+        Picasso.with(context)
+                .load(artist.getCover().getSmallCover())
+                .placeholder(R.drawable.ic_music_note_black_48dp)
+                .fit()
+                .centerInside()
+                .into(smallCover);
 
         fillScreenWithData(artist, name, genres, songsAndAlbums);
 
@@ -98,11 +87,6 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
         genres.setText(ArtistInfoFormatter.formGenreString(artist.getGenres()));
         songsAndAlbums.setText(
                 ArtistInfoFormatter.getAlbumsAndSongsForCard(new Oeuvre(artist)));
-    }
-
-    private void saveImageToDb(ImageView smallCover, Artist artist){
-        Bitmap bitmap = ((BitmapDrawable)smallCover.getDrawable()).getBitmap();
-        imageDbManager.insertSmallCoverIntoDb(bitmap, artist);
     }
 
     public void setListener(ArtistClickListener listener){

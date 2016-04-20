@@ -23,18 +23,4 @@ public class DBContracts {
         public static final String TABLE_NAME = "cache_reg";
         public static final String TIME = "time";
     }
-
-    public static class CoverTable implements BaseColumns {
-        public static final String COVER = "cover";
-        public static final String ARTIST_NAME = "artist_name";
-        public static final String ARTIST_ID = "artist_id";
-    }
-
-    public static final class SmallCoverTable extends CoverTable implements BaseColumns{
-        public static final String TABLE_NAME = "small_cover";
-    }
-
-    public static final class BigCoverTable extends CoverTable implements BaseColumns{
-        public static final String TABLE_NAME = "big_cover";
-    }
 }
