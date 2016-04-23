@@ -1,8 +1,10 @@
 package com.portfolio.sanchellios.yandexmusictraining.views;
 
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +27,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class ListOfArtistsActivity extends AppCompatActivity implements ArtistListFragment.ArtistListViewer {
+    public static final String RV_POSITION = "RV_POSITION";
     private String saveArtistListToDbState = ArtistListFragment.SAVE_TO_DB_STATE;
     private final String ARTISTS = "ARTISTS";
     private ArrayList<Artist> artists = new ArrayList<>();
@@ -129,6 +132,14 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
         }
     }
 
+    private void resetPositionOfRecyclerView(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(ListOfArtistsActivity.RV_POSITION, 0);
+        editor.apply();
+        Log.i(ListOfArtistsActivity.RV_POSITION, "Stored position = " + 0);
+    }
+
     @Override
     public ArrayList<Artist> getArtistList() {
         return this.artists;
@@ -145,6 +156,13 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
 
     private class JSONLoader extends AsyncTask<String, Void, ArrayList<Artist>> {
         ArrayList<Artist> artistsCollection = new ArrayList<>();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            resetPositionOfRecyclerView();
+        }
+
         @Override
         protected ArrayList<Artist> doInBackground(String... params) {
             try{

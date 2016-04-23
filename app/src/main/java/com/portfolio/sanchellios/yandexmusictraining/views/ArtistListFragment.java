@@ -2,11 +2,14 @@ package com.portfolio.sanchellios.yandexmusictraining.views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +24,12 @@ import java.util.ArrayList;
  * Created by Alexander Vasilenko on 10.04.16.
  */
 public class ArtistListFragment extends Fragment {
-    private static final int VERTICAL_ITEM_SPACE = 2;
+    private static final int VERTICAL_ITEM_SPACE = 4;
     public static final String SAVE_TO_DB_STATE = "SAVE_TO_DB_STATE";
     public static final String IGNORE_SAVE = "IGNORE_SAVE";
     private static final String ARTISTS = "ARTISTS";
     private static final String RECYCLER_ARTIST = "RECYCLER_ARTIST";
+    private LinearLayoutManager layoutManager;
     private ArrayList<Artist> artists = new ArrayList<>();
     private RecyclerView artistRecycler;
     private ArtistListViewer viewer;
@@ -53,49 +57,61 @@ public class ArtistListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         artists = getArguments().getParcelableArrayList(ARTISTS);
+        layoutManager = new LinearLayoutManager(getActivity());
         artistRecycler = (RecyclerView)inflater
                 .inflate(R.layout.artist_list_fragment,
                         container,
                         false);
+
         setUpRecycler();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int position = preferences.getInt(ListOfArtistsActivity.RV_POSITION, 0);
+        Log.i(ListOfArtistsActivity.RV_POSITION, "Retrieved position: " + position);
+        layoutManager.scrollToPositionWithOffset(position, 0);
+
         return artistRecycler;
     }
 
     private void setUpRecycler(){
         ArtistListAdapter adapter = new ArtistListAdapter(artists, getContext().getApplicationContext());
-        adapter.setListener(new ArtistListAdapter.ArtistClickListener(){
+        adapter.setListener(new ArtistListAdapter.ArtistClickListener() {
             @Override
-            public void onClick(Artist artist){
+            public void onClick(Artist artist) {
                 viewer.killTask();
-                if(viewer.getArtistSaveToDbState().equals(SAVE_TO_DB_STATE)){
+                if (viewer.getArtistSaveToDbState().equals(SAVE_TO_DB_STATE)) {
                     Intent intentService;
                     ArrayList<Artist> artists = viewer.getArtistList();
-                    for(int i = 0; i < artists.size(); i++){
+                    for (int i = 0; i < artists.size(); i++) {
                         intentService = new Intent(getActivity(), ArtistCacheService.class);
                         intentService.putExtra(ArtistCacheService.ARTIST, artists.get(i));
                         getActivity().startService(intentService);
+
                     }
                 }
                 Intent intent = new Intent(getActivity(), DetailedActivity.class);
                 intent.putExtra(DetailedActivity.ARTIST, artist);
                 getActivity().startActivity(intent);
+
             }
         });
+
         artistRecycler.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
         artistRecycler.setAdapter(adapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         artistRecycler.setLayoutManager(layoutManager);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        layoutManager.onSaveInstanceState();
         outState.putParcelable(RECYCLER_ARTIST, artistRecycler.getLayoutManager().onSaveInstanceState());
     }
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
+        layoutManager.onRestoreInstanceState(savedInstanceState);
         if(savedInstanceState != null){
             Parcelable savedRecyclerState = savedInstanceState.getParcelable(RECYCLER_ARTIST);
             artistRecycler.getLayoutManager().onRestoreInstanceState(savedRecyclerState);

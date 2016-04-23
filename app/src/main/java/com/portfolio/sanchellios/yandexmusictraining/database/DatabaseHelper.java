@@ -12,7 +12,7 @@ import static com.portfolio.sanchellios.yandexmusictraining.database.DBContracts
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String DATABASE_NAME = "artists.db";
-    public static final int SCHEMA = 5;
+    public static final int SCHEMA = 6;
     private static DatabaseHelper instance = null;
 
     final String SQL_CREATE_ARTIST_TABLE_SCRIPT =
@@ -81,4 +81,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL(DELETE_FROM + CacheRegistryTable.TABLE_NAME + END);
         Log.d(DELETE_FROM, "tables are truncated");
     }
+
+
 }
