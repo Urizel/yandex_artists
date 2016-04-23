@@ -2,14 +2,11 @@ package com.portfolio.sanchellios.yandexmusictraining.views;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,10 +62,8 @@ public class ArtistListFragment extends Fragment {
 
         setUpRecycler();
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int position = preferences.getInt(ListOfArtistsActivity.RV_POSITION, 0);
-        Log.i(ListOfArtistsActivity.RV_POSITION, "Retrieved position: " + position);
-        layoutManager.scrollToPositionWithOffset(position, 0);
+        LayoutPositionManager positionManager = new LayoutPositionManager(getActivity());
+        layoutManager.scrollToPositionWithOffset(positionManager.getPosition(), 0);
 
         return artistRecycler;
     }

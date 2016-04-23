@@ -1,11 +1,8 @@
 package com.portfolio.sanchellios.yandexmusictraining.views;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +72,8 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                storePositionInSharedPreferences(position);
+                LayoutPositionManager positionSaver = new LayoutPositionManager(context);
+                positionSaver.setPosition(position);
                 if (listener != null) {
                     listener.onClick(artist);
                 }
@@ -101,13 +99,4 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
     public int getItemCount() {
         return artists.size();
     }
-
-    private void storePositionInSharedPreferences(int position){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(ListOfArtistsActivity.RV_POSITION, position);
-        editor.apply();
-        Log.i(ListOfArtistsActivity.RV_POSITION, "Stored position = " + position);
-    }
-
 }

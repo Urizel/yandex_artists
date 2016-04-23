@@ -1,10 +1,8 @@
 package com.portfolio.sanchellios.yandexmusictraining.views;
 
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -27,13 +25,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class ListOfArtistsActivity extends AppCompatActivity implements ArtistListFragment.ArtistListViewer {
-    public static final String RV_POSITION = "RV_POSITION";
+    public static final String LAYOUT_POSITION = "LAYOUT_POSITION";
     private String saveArtistListToDbState = ArtistListFragment.SAVE_TO_DB_STATE;
     private final String ARTISTS = "ARTISTS";
     private ArrayList<Artist> artists = new ArrayList<>();
     private AsyncTask task;
     private final String LOAD_ARTISTS = "Load artists: ";
-    private final String YANDEX_URL = "http://cache-default04g.cdn.yandex.net/download.cdn.yandex.net/mobilization-2016/artists.json";
+    private final String Y_URL = "http://cache-default04g.cdn.yandex.net/download.cdn.yandex.net/mobilization-2016/artists.json";
     private TimeEvaluator timeEvaluator;
 
     @Override
@@ -83,7 +81,7 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
         saveArtistListToDbState = ArtistListFragment.SAVE_TO_DB_STATE;
         Log.d(LOAD_ARTISTS, "loading from Internet");
         timeEvaluator.registerCurrentTimeToDb();
-        task = new JSONLoader().execute(YANDEX_URL);
+        task = new JSONLoader().execute(Y_URL);
     }
 
     private void loadArtistsFromDb(){
@@ -132,14 +130,6 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
         }
     }
 
-    private void resetPositionOfRecyclerView(){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(ListOfArtistsActivity.RV_POSITION, 0);
-        editor.apply();
-        Log.i(ListOfArtistsActivity.RV_POSITION, "Stored position = " + 0);
-    }
-
     @Override
     public ArrayList<Artist> getArtistList() {
         return this.artists;
@@ -160,7 +150,8 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            resetPositionOfRecyclerView();
+            LayoutPositionManager positionSaver = new LayoutPositionManager(getApplicationContext());
+            positionSaver.resetPosition();
         }
 
         @Override
