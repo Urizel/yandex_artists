@@ -8,10 +8,13 @@ import org.junit.Test;
 /**
  * Created by aleksandrvasilenko on 16.04.16.
  */
+// XXX DRY?
 public class AlbumsGrammarControllerTest {
+    // XXX const?
     String oneAlbum = "альбом";
     String twoToFourAlbum = "альбома";
     String fiveToTenAlbum = "альбомов";
+    // XXX field?
     String testString = "";
     AlbumsGrammarController ags = new AlbumsGrammarController();
 
@@ -50,6 +53,7 @@ public class AlbumsGrammarControllerTest {
         }
     }
 
+    // XXX purpose?
     private void setTestString(String text){
         this.testString = text;
     }

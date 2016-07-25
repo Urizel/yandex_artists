@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.ViewHolder>{
 
     private ArrayList<Artist> artists;
+    // XXX why? possible problems?
     private Context context;
     private ArtistClickListener listener;
 
@@ -60,6 +61,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
         TextView songsAndAlbums = (TextView)cardView.findViewById(R.id.albums_and_songs);
 
         final Artist artist = artists.get(position);
+        // another source of context?
         Picasso.with(context)
                 .load(artist.getCover().getSmallCover())
                 .placeholder(R.drawable.ic_music_note_black_48dp)
@@ -69,6 +71,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Vi
 
         fillScreenWithData(artist, name, genres, songsAndAlbums);
 
+        // XXX should it be here?
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

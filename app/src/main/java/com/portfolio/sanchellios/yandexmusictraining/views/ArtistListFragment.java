@@ -20,7 +20,9 @@ import java.util.ArrayList;
 /**
  * Created by Alexander Vasilenko on 10.04.16.
  */
+// XXX Fragment purpose?
 public class ArtistListFragment extends Fragment {
+    // XXX resources?
     private static final int VERTICAL_ITEM_SPACE = 4;
     public static final String SAVE_TO_DB_STATE = "SAVE_TO_DB_STATE";
     public static final String IGNORE_SAVE = "IGNORE_SAVE";
@@ -69,6 +71,7 @@ public class ArtistListFragment extends Fragment {
     }
 
     private void setUpRecycler(){
+        // XXX app context?
         ArtistListAdapter adapter = new ArtistListAdapter(artists, getContext().getApplicationContext());
         adapter.setListener(new ArtistListAdapter.ArtistClickListener() {
             @Override
@@ -77,6 +80,8 @@ public class ArtistListFragment extends Fragment {
                 if (viewer.getArtistSaveToDbState().equals(SAVE_TO_DB_STATE)) {
                     Intent intentService;
                     ArrayList<Artist> artists = viewer.getArtistList();
+                    // XXX performance?
+                    // XXX why here?
                     for (int i = 0; i < artists.size(); i++) {
                         intentService = new Intent(getActivity(), ArtistCacheService.class);
                         intentService.putExtra(ArtistCacheService.ARTIST, artists.get(i));
@@ -99,6 +104,7 @@ public class ArtistListFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        // XXX two managers?
         layoutManager.onSaveInstanceState();
         outState.putParcelable(RECYCLER_ARTIST, artistRecycler.getLayoutManager().onSaveInstanceState());
     }

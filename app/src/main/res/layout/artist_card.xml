@@ -4,6 +4,7 @@
     android:layout_height="150dp"
     android:id="@+id/artist_card">
 
+    <!--XXX Simplify?-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,6 +17,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:layout_marginStart="18dp"/>
+        <!--XXX Relative inside relative?-->
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

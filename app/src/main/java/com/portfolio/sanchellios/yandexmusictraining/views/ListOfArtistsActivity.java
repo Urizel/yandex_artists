@@ -30,7 +30,9 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
     private final String ARTISTS = "ARTISTS";
     private ArrayList<Artist> artists = new ArrayList<>();
     private AsyncTask task;
+    // XXX res?
     private final String LOAD_ARTISTS = "Load artists: ";
+    // XXX config?
     private final String Y_URL = "http://cache-default04g.cdn.yandex.net/download.cdn.yandex.net/mobilization-2016/artists.json";
     private TimeEvaluator timeEvaluator;
 
@@ -84,6 +86,7 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
         task = new JSONLoader().execute(Y_URL);
     }
 
+    // XXX Thread?
     private void loadArtistsFromDb(){
         Log.d(LOAD_ARTISTS, "loading from Database");
         saveArtistListToDbState = ArtistListFragment.IGNORE_SAVE;
@@ -103,6 +106,7 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         artists = savedInstanceState.getParcelableArrayList(ARTISTS);
+        // XXX null check?
         try {
             int size =  artists.size();
             Log.d(ARTISTS, "Artists are loaded: " + size + " instances");
@@ -157,6 +161,8 @@ public class ListOfArtistsActivity extends AppCompatActivity implements ArtistLi
         @Override
         protected ArrayList<Artist> doInBackground(String... params) {
             try{
+                // XXX Rest client?
+                // XXX data binding?
                 Gson gson = new Gson();
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder().url(params[0]).build();

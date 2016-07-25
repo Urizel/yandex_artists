@@ -17,6 +17,7 @@ import static com.portfolio.sanchellios.yandexmusictraining.database.DBContracts
 /**
  * Created by aleksandrvasilenko on 17.04.16.
  */
+// ORM?
 public class ArtistDbManager {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
@@ -112,6 +113,7 @@ public class ArtistDbManager {
     }
 
     private String formatGenres(ArrayList<String> genres){
+        // XXX another way?
         Iterator<String> iterator = genres.iterator();
         StringBuilder result = new StringBuilder();
         String comma = ", ";
@@ -124,6 +126,8 @@ public class ArtistDbManager {
         return result.toString();
     }
 
+    // XXX why ArrayList?
+    // XXX another way?
     private ArrayList<String> splitGenresFromString(Cursor cursor){
         ArrayList<String> genresList = new ArrayList<>();
         String genresString = cursor.getString(cursor.getColumnIndex(ArtistTable.GENRES));
@@ -136,9 +140,11 @@ public class ArtistDbManager {
 
     private boolean isArtistExistInDb(String name){
         db = dbHelper.getReadableDatabase();
+        // XXX args?
         Cursor cursor = db.rawQuery("SELECT * FROM "+ArtistTable.TABLE_NAME+" WHERE "+ArtistTable.NAME+"='"+name+"';", null);
         int counter = cursor.getCount();
         cursor.close();
+        // XXX?
         if(counter > 0){
             return true;
         }else {

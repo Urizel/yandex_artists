@@ -5,6 +5,7 @@ import com.portfolio.sanchellios.yandexmusictraining.string_formating.GrammarCon
 /**
  * Created by aleksandrvasilenko on 16.04.16.
  */
+// XXX res?
 public class AlbumsGrammarController implements GrammarController {
     @Override
     public String getCorrectString(int capacity) {

@@ -5,6 +5,7 @@ import com.portfolio.sanchellios.yandexmusictraining.artist.Artist;
 /**
  * Created by aleksandrvasilenko on 16.04.16.
  */
+// XXX useless class
 public class Oeuvre {
     private int tracks;
     private int albums;

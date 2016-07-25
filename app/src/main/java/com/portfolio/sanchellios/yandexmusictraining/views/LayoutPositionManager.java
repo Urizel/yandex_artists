@@ -19,6 +19,7 @@ public class LayoutPositionManager {
     }
 
     public void setPosition(int position){
+        // XXX why not constructor?
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
         editor.putInt(POSITION, position);
@@ -27,6 +28,7 @@ public class LayoutPositionManager {
     }
 
     public int getPosition(){
+        // XXX has field?
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         int position = preferences.getInt(POSITION, 0);
         Log.i(POSITION, "Retrieved position: " + position);

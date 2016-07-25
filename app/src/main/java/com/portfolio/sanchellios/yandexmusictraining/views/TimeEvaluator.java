@@ -55,6 +55,7 @@ public class TimeEvaluator {
         db.insert(TABLE_NAME, null, values);
     }
 
+    // XXX another form?
     public String getCurrentTime(){
         return ""+currentTime.dayOfWeek+":"+currentTime.hours+":"+currentTime.minutes;
     }
